@@ -1,10 +1,8 @@
-# Fully Associative Cache Mapping using LRU Replacement
-
 class CacheLine:
     def __init__(self):
         self.block = None
         self.valid = False
-        self.time = 0   # last access time
+        self.time = 0
 
 
 class AssociativeCacheLRU:
@@ -16,17 +14,14 @@ class AssociativeCacheLRU:
     def access(self, block):
         self.timer += 1
 
-        # SEARCH: HIT check
         for line in self.cache:
             if line.valid and line.block == block:
                 line.time = self.timer
                 print(f"Block {block} → HIT")
                 return
 
-        # MISS
         print(f"Block {block} → MISS")
 
-        # EMPTY LINE check
         for line in self.cache:
             if not line.valid:
                 line.block = block
@@ -34,7 +29,6 @@ class AssociativeCacheLRU:
                 line.time = self.timer
                 return
 
-        # LRU replacement
         lru_line = min(self.cache, key=lambda x: x.time)
         replaced = lru_line.block
         lru_line.block = block
@@ -50,8 +44,6 @@ class AssociativeCacheLRU:
                 print(f" Line {i}: EMPTY")
         print("-" * 30)
 
-
-# ------------------ MAIN PROGRAM ------------------
 
 def main():
     try:
